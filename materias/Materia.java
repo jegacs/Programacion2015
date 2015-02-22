@@ -8,6 +8,7 @@ public class Materia implements Serializable {
     public Materia(String nombre, double calificacion) {
 	this.nombre = nombre;
 	this.calificacion = calificacion;
+
     }
 		    
 }
