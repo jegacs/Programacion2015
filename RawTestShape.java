@@ -36,7 +36,6 @@ public class RawTestShape extends JPanel {
 	    });
 	frame.add(new RawTestShape());
 	frame.add(jpanel);
-	// frame.pack();
 	frame.setVisible(true);
     }
 }
