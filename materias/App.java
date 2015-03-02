@@ -13,7 +13,7 @@ import java.io.OptionalDataException;
 import java.lang.ClassCastException;
 public class App {
     public static void main(String arg[]) throws IOException   {
-	
+	double promedio = 0;
 	Materia materias[] = {
 	    new Materia("Calculo", 9),
 	    new Materia("Ingles", 9.5),
@@ -29,7 +29,9 @@ public class App {
 	out.writeObject(new Parasito());
 	for(Materia m : materias) {
 	    out.writeObject(m);
+	    promedio = promedio + m.calificacion;
 	}
+	promedio = promedio/materias.length;
 	out.writeInt(3223);
 	out.writeObject(new Parasito());
 	out.close();
@@ -69,6 +71,7 @@ public class App {
 	     */
 	    in.close();
 	}
+	System.out.println("Promedio " + promedio);
     }
 }
 	       
