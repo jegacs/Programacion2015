@@ -7,6 +7,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JLabel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import java.util.Scanner;
 
 public class RawTestShape extends JPanel {
@@ -35,11 +36,8 @@ public class RawTestShape extends JPanel {
 	    100,
 	    100 - diagMayor
 	};
-	
-	//int n = 4;
+		
 	super.paintComponent(g);
-	//	Polygon p = new Polygon(x, y, 4);
-	
 	g.drawPolygon(new Polygon(x, y, 4));
     }
     
@@ -48,6 +46,7 @@ public class RawTestShape extends JPanel {
 	JFrame frame = new JFrame();
 	JPanel jpanel = new JPanel();
 	JLabel label = new JLabel("Area:");
+	
 	jpanel.add(label);
 	frame.setLayout(new GridLayout(2,1));
 	frame.setTitle("RawTestShape");
@@ -57,11 +56,26 @@ public class RawTestShape extends JPanel {
 		    System.exit(0);
 		}
 	    });
-	System.out.print("Inserte diagonal mayor: ");
+	System.out.print("Inserte longitud diagonal mayor: ");
 	int a = scanner.nextInt();
-	System.out.print("Inserte diagonal menor: ");
+	System.out.print("Inserte longitud diagonal menor: ");
 	int b = scanner.nextInt();
-	frame.add(new RawTestShape(a, b));
+	if(a < 0 || b < 0) {
+	    throw new IllegalArgumentException("Las diagonales pueden" + 
+					       " no ser negativas");
+	} else {
+	    // El programa solo admite una longitud maxima de 200 
+	    // en las diagonales.
+	    if(a > 200 || b > 200) 
+		throw new IllegalArgumentException("Longitud fuera de los limites");
+
+	}
+	double area = (a*b)/(2.0);
+	JTextField jtext = new JTextField(String.valueOf(area) + "u^2");
+	jtext.setEditable(false);
+	
+	jpanel.add(jtext);
+	frame.add(new RawTestShape(a/2, b/2));
 	frame.add(jpanel);
 	frame.setVisible(true);
     }
