@@ -58,9 +58,9 @@ public class Clock
      */
     private void step()
     {
-	if(isCrono) { 
-        clock.timeTick();
-        label.setText(clock.getTime());
+	clock.timeTick();
+	if(isCrono) {
+	    label.setText(clock.getTime());
 	}
 	
     }
