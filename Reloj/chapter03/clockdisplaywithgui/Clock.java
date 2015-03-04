@@ -4,7 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
-
+import java.text.*;
+import java.util.Date;
 /**
  * A very simple GUI (graphical user interface) for the clock display.
  * In this implementation, time runs at about 3 minutes per second, so that
@@ -20,7 +21,10 @@ public class Clock
     private ClockDisplay clock;
     private boolean clockRunning = false;
     private TimerThread timerThread;
-    
+    private boolean isCrono = true;
+    private boolean isClock = false;
+    private ActionListener timeListener;
+    private Date date;
     /**
      * Constructor for objects of class Clock
      */
@@ -28,6 +32,7 @@ public class Clock
     {
         makeFrame();
         clock = new ClockDisplay();
+	date = new Date();
     }
     
     /**
@@ -53,8 +58,11 @@ public class Clock
      */
     private void step()
     {
+	if(isCrono) { 
         clock.timeTick();
         label.setText(clock.getTime());
+	}
+	
     }
     
     /**
@@ -68,7 +76,7 @@ public class Clock
                 + "Los integrantes del equipo 1 deberan reprogramar la clase Clock\n"
                 + "de tal manera que el programa completo funcione como les sera\n"
                 + "indicado por el instructor del curso.\n"
-                + "Febrero de 2015.",
+                + "Febrero de 2015. \n Gabo was here ;D ",
                     "About Cronometro", 
                     JOptionPane.INFORMATION_MESSAGE);
     }
@@ -80,7 +88,19 @@ public class Clock
     {
         System.exit(0);
     }
-
+    
+    
+    private void cambiarEstado() { 
+	if(isCrono) {
+	    isCrono = false;
+	    isClock = true;
+	} else {
+	    if(isClock) {
+		isCrono = true;
+		isClock = false;
+	    }
+	}
+    }
     
     /**
      * Create the Swing frame and its content.
@@ -107,12 +127,20 @@ public class Clock
         label.setFont(displayFont);
         //imagePanel.setBorder(new EtchedBorder());
         contentPane.add(label, BorderLayout.CENTER);
-
+	
         // Create the toolbar with the buttons
         JPanel toolbar = new JPanel();
         toolbar.setLayout(new GridLayout(1, 0));
         
         JButton startButton = new JButton("Start");
+	timeListener = new ActionListener() { 
+		public void actionPerformed(ActionEvent ae) {
+		    if(isClock) {
+			label.setText(new SimpleDateFormat("hh:mm:ss").format(date));
+		    }
+		}
+	    };
+	new Timer(1000, timeListener).start();
         startButton.addActionListener(new ActionListener() {
                                public void actionPerformed(ActionEvent e) { start(); }
                            });
@@ -160,17 +188,24 @@ public class Clock
         
         JMenu menu;
         JMenuItem item;
-        
+        JMenuItem itemReloj;
         // create the File menu
         menu = new JMenu("File");
         menubar.add(menu);
         
         item = new JMenuItem("About Clock...");
-            item.addActionListener(new ActionListener() {
-                               public void actionPerformed(ActionEvent e) { showAbout(); }
-                           });
-        menu.add(item);
-
+	item.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) { showAbout(); }
+	    });
+	itemReloj = new JMenuItem("Reloj/Cronometro");
+	itemReloj.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+		    cambiarEstado();
+		}
+	    });
+	
+	menu.add(item);
+	menu.add(itemReloj);
         menu.addSeparator();
         
         item = new JMenuItem("Quit");
