@@ -23,7 +23,7 @@ public class Clock
     private TimerThread timerThread;
     private boolean isCrono = true;
     private boolean isClock = false;
-    private ActionListener timeListener;
+    //private ActionListener timeListener;
     private Date date;
     /**
      * Constructor for objects of class Clock
@@ -98,6 +98,7 @@ public class Clock
 	    if(isClock) {
 		isCrono = true;
 		isClock = false;
+		label.setText(clock.getTime());
 	    }
 	}
     }
@@ -133,14 +134,14 @@ public class Clock
         toolbar.setLayout(new GridLayout(1, 0));
         
         JButton startButton = new JButton("Start");
-	timeListener = new ActionListener() { 
+	ActionListener timeListener = new ActionListener() { 
 		public void actionPerformed(ActionEvent ae) {
 		    if(isClock) {
-			label.setText(new SimpleDateFormat("hh:mm:ss").format(date));
+			label.setText(new SimpleDateFormat("hh:mm:ss").format(new Date()));
 		    }
 		}
 	    };
-	new Timer(1000, timeListener).start();
+	new Timer(100, timeListener).start();
         startButton.addActionListener(new ActionListener() {
                                public void actionPerformed(ActionEvent e) { start(); }
                            });
